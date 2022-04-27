@@ -1,6 +1,22 @@
-import logging
-from logging.config import dictConfig
-from log_config import log_config # this is your local file
+log_config = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "default": {
+            "()": "uvicorn.logging.DefaultFormatter",
+            "fmt": "%(levelprefix)s %(asctime)s %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
 
-dictConfig(log_config)
-logger = logging.getLogger("my-project-logger") # should be this name unless you change it in log_config.py
+        },
+    },
+    "handlers": {
+        "default": {
+            "formatter": "default",
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stderr",
+        },
+    },
+    "loggers": {
+        "reddit-broker-bot": {"handlers": ["default"], "level": "INFO"},
+    },
+}

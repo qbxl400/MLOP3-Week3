@@ -1,19 +1,15 @@
 from fastapi import FastAPI, status
+import logging
+from logging.config import dictConfig
+from log_config import log_config # this is your local file
 
-from transformers import pipeline
-sentiment_model = pipeline("sentiment-analysis")
+dictConfig(log_config)
 
-sentiment_query_sentence = get_random_comment(top_comments)
-sentiment = sentiment_model(sentiment_query_sentence)
-print(f"Sentiment test: {sentiment_query_sentence} == {sentiment})
-
+logger = logging.getLogger("my-project-logger") # should be this name unless you change it in log_config.py
 
 app= FastAPI()
 
 @app.get('/healthcheck', status_code=status.HTTP_200_OK)
 def perofrm_healthcheck():
+        logger.info("logging from project logger")
         return {'healthcheck': 'Everthing OK!'}
-
-@app.post("my-endpoint")
-def my_endpoint(request: PredictionRequest):
-  # YOUR CODE GOES HERE
